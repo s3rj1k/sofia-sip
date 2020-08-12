@@ -1,3 +1,7 @@
+# BUILD using: rpmbuild -ba spandsp.spec
+# DOC: https://fedoraproject.org/wiki/Packaging:SourceURL
+%global commit 43065e33014c8bf04ef3d35748430e40b1d5729e
+
 Name:           sofia-sip
 Version:        1.13.0
 Release:        1%{?dist}
@@ -5,7 +9,9 @@ Summary:        Sofia SIP User-Agent library
 
 License:        LGPLv2+
 URL:            https://github.com/freeswitch/sofia-sip
-Source0:        https://files.freeswitch.org/downloads/libs/%{name}-%{version}.tar.gz
+
+%undefine _disable_source_fetch
+Source0:        https://github.com/freeswitch/%{name}/archive/%{commit}.tar.gz
 
 BuildRequires:  gcc-c++
 BuildRequires:  openssl-devel >= 0.9.7
@@ -35,8 +41,7 @@ Requires:       sofia-sip = %{version}-%{release}
 Command line utilities for the Sofia SIP UA library.
 
 %prep
-%setup0 -q -n sofia-sip-%{version}%{?work:work%{work}}
-
+%autosetup -n %{name}-%{commit}
 
 %build
 ./autogen.sh
@@ -75,5 +80,5 @@ find . -name installdox -delete
 #%{_mandir}/man1/*.1*
 
 %changelog
-* Tue Jul 28 2020 FreeSWITCH Project <andrey@freeswitch.com> - 1.13.1-1
+* Wed Aug 12 2020 FreeSWITCH Project <andrey@freeswitch.com> - 1.13.1-1
 - Initial release for the FreeSWITCH Project
